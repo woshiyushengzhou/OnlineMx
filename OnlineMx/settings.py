@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'xadmin',
     'crispy_forms',
     'captcha',
+    'pure_pagination',
 ]
 
 AUTH_USER_MODEL = "users.UserPorfile"
@@ -164,9 +165,16 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR,'static')
 ]
 
-#上下文渲染器
+#上下文渲染器, 'django.core.context_processors.media', 由django自动注册
 MEDIA_URL = "/uploadimage/"
 
 #图片上传路径
 #MEDIA_URL 必须以反斜线结束
 MEDIA_ROOT = os.path.join(BASE_DIR,"uploadimage")
+
+#分页
+PAGINATION_SETTINGS = {
+    'PAGE_RANGE_DISPLAYED': 8,
+    'MARGIN_PAGES_DISPLAYED': 2,
+    'SHOW_FIRST_PAGE_WHEN_INVALID': True,
+}

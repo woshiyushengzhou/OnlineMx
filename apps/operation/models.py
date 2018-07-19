@@ -11,9 +11,9 @@ from course.models import Course
 # Create your models here.
 
 class UserAsk(models.Model):
-    name = models.CharField(max_length=20,verbose_name=u"名字")
-    mobile = models.CharField(max_length=11,verbose_name=u"手机号")
-    course_name = models.CharField(max_length=50,verbose_name=u"课程名称")
+    name = models.CharField(max_length=20,verbose_name=u"名字",default='yushengzhou')
+    mobile = models.CharField(max_length=11,verbose_name=u"手机号",default='13554494531')
+    course_name = models.CharField(max_length=50,verbose_name=u"课程名称",default='python')
     add_time = models.DateTimeField(default=datetime.now)
 
     class Meta:
@@ -58,7 +58,7 @@ class UserMessage(models.Model):
 
 class UserCourse(models.Model):
     user = models.ForeignKey(UserPorfile,verbose_name=u"用户名称")
-    course = models.ForeignKey(Course,)
+    course = models.ForeignKey(Course)
     add_time = models.DateTimeField(default=datetime.now)
 
     class Meta:

@@ -34,6 +34,8 @@ urlpatterns = [
     url(r'^resetpwd/(?P<code>.+)/$',ResetPwdView.as_view(),name="resetpwd"),
     url(r'^modifypwd/$',ModifyPwdView.as_view(),name="modifypwd"),
     url(r'^org-list/$',OrgView.as_view(),name="orglist"),
-    #配置后台上传文件处理url
-    url(r'^uploadimage/(?P<path>.+)$',serve,{"document_root":MEDIA_ROOT})
+    #配置后台上传文件处理url,上下文渲染（可以在Template的html文件中使用静态文件路径）
+    url(r'^uploadimage/(?P<path>.+)$',serve,{"document_root":MEDIA_ROOT}),
+    url(r'^org/',include("organization.urls",namespace="org")),
+    url(r'^course/', include("course.urls", namespace="course")),
 ]

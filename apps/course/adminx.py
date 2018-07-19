@@ -6,9 +6,9 @@ from course.models import Course,Chapter,Viedo,CourseResource
 
 
 class CourseAdmin(object):
-    list_display = ['courseName','courseIntroduction','courseDegree','courseTime','students','chapters','category','click_nums','courseCover','collect_nums']
-    search_fields = ['courseName','courseIntroduction','courseDegree','courseTime','students','chapters','category','click_nums','courseCover','collect_nums']
-    list_filter = ['courseName','courseIntroduction','courseDegree','courseTime','students','chapters','category','click_nums','courseCover','collect_nums','add_time']
+    list_display = ['courseName','courseIntroduction','courseDegree','courseTime','students','category','click_nums','courseCover','collect_nums']
+    search_fields = ['courseName','courseIntroduction','courseDegree','courseTime','students','category','click_nums','courseCover','collect_nums']
+    list_filter = ['courseName','courseIntroduction','courseDegree','courseTime','students','category','click_nums','courseCover','collect_nums','add_time']
 
 
 class ChapterAdmin(object):
