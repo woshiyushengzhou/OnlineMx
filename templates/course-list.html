@@ -104,11 +104,11 @@
 					<div class="group_list">
                         {% for per_course in all_course.object_list %}
                             <div class="box">
-                                <a href="course-detail.html">
+                                <a href="{% url 'course:course_detail' per_course.id %}">
                                     <img width="280" height="350" class="scrollLoading" src="{{ MEDIA_URL }}{{ per_course.courseCover }}"/>
                                 </a>
                                 <div class="des">
-                                    <a href="course-detail.html">
+                                    <a href="{% url 'course:course_detail' per_course.id %} ">
                                         <h2>{{ per_course.courseName }}</h2>
                                     </a>
                                     <span class="fl">时长：<i class="key">{{ per_course.courseTime }}</i></span>
@@ -126,7 +126,7 @@
 					</div>
                     		 <div class="pageturn">
             <ul class="pagelist">
-                {% if teacher.has_previous %}
+                {% if all_course.has_previous %}
                     <li class="long"><a href="?{{ all_course.previous_page_number.querystring }}">上一页</a></li>
                 {% else %}
                     <li class="long"><a href="">上一页</a></li>

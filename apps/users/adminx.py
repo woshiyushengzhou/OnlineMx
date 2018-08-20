@@ -1,4 +1,3 @@
-from django.contrib.auth.models import AbstractUser
 import xadmin
 
 from users.models import UserPorfile,EmailVerifyRecord,Banner
@@ -19,7 +18,5 @@ class BannerAdmin(object):
     search_fields  = ['title','image','url','index']
     list_filter = ['title','image','url','index','add_time']
 
-xadmin.site.unregister(UserPorfile)
-xadmin.site.register(UserPorfile,UserPorfileAdmin)
 xadmin.site.register(EmailVerifyRecord,EmailVerifyRecordAdmin)
 xadmin.site.register(Banner,BannerAdmin)

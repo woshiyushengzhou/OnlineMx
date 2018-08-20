@@ -1,6 +1,7 @@
 # _*_ encoding:utf8 _*_
 from django.views.generic import View,ListView
 from django.http import HttpResponse
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 import json
@@ -167,6 +168,7 @@ class AddFav(View):
             fav_type = request.POST.get("fav_type", -1)
             try:
                 is_record = UserFavorite.objects.get(user=request.user, fav_id=int(fav_id), fav_type=int(fav_type))
+                print int(fav_id)
             except (UserFavorite.DoesNotExist, UserFavorite.MultipleObjectsReturned):
                 is_record = ''
             if is_record:
@@ -185,13 +187,17 @@ class AddFav(View):
 
 class TeacherList(View):
     def get(self, request):
-        getsort = request.GET.get('sort',"all")
+        getsort = request.GET.get('sort',"")
         if getsort == "hot":
             renqi = "hot"
             teacher_list = Teacher.objects.all().order_by("-click_nums")
         else:
             renqi = "all"
             teacher_list = Teacher.objects.all()
+        keyword = request.GET.get('keywords', '')
+        # print keyword
+        if keyword:
+            teacher_list = teacher_list.filter(name__icontains=keyword)
         try:
             page = request.GET.get("page", 1)
         except (EmptyPage, PageNotAnInteger):
@@ -214,13 +220,39 @@ class TeacherDetailList(View):
         except (Teacher.DoesNotExist, Teacher.MultipleObjectsReturned):
             return HttpResponse("page not found")
         teacher_all_course = Course.objects.filter(teacher=teacher)
+        #老师所属机构
+        teacher_belong_org = teacher.teacher_org.all()[0]
         try:
             page = request.GET.get("page", 1)
         except (PageNotAnInteger, EmptyPage):
             page = 1
-        p = Paginator(teacher_all_course, 2 ,request=request)
+        p = Paginator(teacher_all_course, 2, request=request)
         teachercourses = p.page(page)
+        if request.user.is_authenticated():
+            try:
+                is_record = UserFavorite.objects.get(user=request.user, fav_id=teacher_belong_org.id, fav_type=1)
+            except (UserFavorite.DoesNotExist, UserFavorite.MultipleObjectsReturned):
+                is_record = ""
+            try:
+                is_record_t = UserFavorite.objects.get(user=request.user, fav_id=int(teacherid), fav_type=2)
+            except (UserFavorite.DoesNotExist, UserFavorite.MultipleObjectsReturned):
+                is_record_t = ""
+            if is_record:
+                is_fav_org = True
+            else:
+                is_fav_org = False
+            if is_record_t:
+                is_fav_teacher = True
+            else:
+                is_fav_teacher = False
+        else:
+            is_fav_org = False
+            is_fav_teacher = False
         return render(request, 'teacher-detail.html', {
             "teacher":teacher,
             "teachercourses":teachercourses,
+            'teachersort':Teacher.objects.order_by("-click_nums")[0:3],
+            'teacher_org':teacher_belong_org,
+            'is_fav_org':is_fav_org,
+            'is_fav_teacher':is_fav_teacher,
         })

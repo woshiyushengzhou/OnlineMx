@@ -2,6 +2,7 @@
 from django.shortcuts import render
 from django.views.generic import View
 from django.http import HttpResponse
+from django.db.models import Q
 
 from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
 
@@ -13,7 +14,7 @@ import json
 
 class CourseList(View):
     def get(self, request):
-        sort = request.GET.get('sort', '')
+        sort = request.GET.get('sort', 'hot')
         hot_course = Course.objects.filter().order_by("-click_nums")[0:3]
         if sort=='new':
             all_course = Course.objects.all().order_by('-add_time')
@@ -23,7 +24,10 @@ class CourseList(View):
             all_course =  Course.objects.all().order_by('-students')
         else:
             all_course = Course.objects.all().order_by('-add_time')
-        p_temp = Paginator(all_course,3)
+        keyword = request.GET.get('keywords', "")
+        if keyword:
+            all_course = all_course.filter(Q(courseName__icontains=keyword)|Q(courseIntroduction__icontains=keyword))
+        p_temp = Paginator(all_course,3, request=self.request)
         try:
             p = p_temp.page(request.GET.get('page', ''))
         except (PageNotAnInteger, EmptyPage):

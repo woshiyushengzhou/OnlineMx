@@ -29,7 +29,7 @@ SECRET_KEY = 'x)-kwybw4j2zrr7j7&dlowm1%jhw1t2&24*)$0o!q14anxq!%1'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -171,6 +171,7 @@ MEDIA_URL = "/uploadimage/"
 #图片上传路径
 #MEDIA_URL 必须以反斜线结束
 MEDIA_ROOT = os.path.join(BASE_DIR,"uploadimage")
+# STATIC_ROOT = os.path.join(BASE_DIR,"static")
 
 #分页
 PAGINATION_SETTINGS = {

@@ -6,6 +6,7 @@ import random
 from OnlineMx.settings import EMAIL_HOST_USER
 from users.models import EmailVerifyRecord
 
+
 def crateRandomSeq():
     stdseq = "abcdefghijklmnopqrxtuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
     usercode = ""
@@ -14,8 +15,10 @@ def crateRandomSeq():
     return usercode
 
 def sendEmailToUser(emailaccount,sendtype):
-    '''type 0 注册，type 1 忘记密码'''
+    '''type 0 注册，type 1 忘记密码，type 2 修改邮箱'''
     code = crateRandomSeq()
+    if sendtype == 2:
+        code = crateRandomSeq()[0:4]
     email = emailaccount
     send_type = sendtype
     emailrecord = EmailVerifyRecord()
@@ -31,5 +34,10 @@ def sendEmailToUser(emailaccount,sendtype):
     if sendtype == 1:
         mailtitle = u"菜鸟在线教育修改密码链接"
         mailbody = u"请访问下面的地址修改您的密码: http://127.0.0.1:8000/resetpwd/{0}".format(code)
+        send_status = send_mail(mailtitle,mailbody,EMAIL_HOST_USER,[email])
+        return send_status
+    if sendtype == 2:
+        mailtitle = u"菜鸟教育修改邮箱验证码"
+        mailbody = u"您的验证码为:{0}".format(code)
         send_status = send_mail(mailtitle,mailbody,EMAIL_HOST_USER,[email])
         return send_status
