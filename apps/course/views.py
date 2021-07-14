@@ -31,7 +31,7 @@ class CourseList(View):
         try:
             p = p_temp.page(request.GET.get('page', ''))
         except (PageNotAnInteger, EmptyPage):
-            p = p_temp.page(1)
+            print('nihaoma')
 
         return render(request, "course-list.html", {
             'all_course':p,
