@@ -44,6 +44,10 @@ class Course(models.Model):
     def __unicode__(self):
         return self.courseName
 
+    def tt(self):
+        return "tt"
+
+
 #章节表
 class Chapter(models.Model):
     name = models.CharField(verbose_name=u'章节名称',max_length=50)
