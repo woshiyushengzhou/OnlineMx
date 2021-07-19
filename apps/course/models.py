@@ -45,7 +45,7 @@ class Course(models.Model):
         return self.courseName
 
     def tt(self):
-        return "tt"
+        return "aaa"
 
 
 #章节表
